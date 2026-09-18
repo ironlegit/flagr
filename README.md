@@ -1,19 +1,28 @@
-# Flagger
+<p align="center">
+  <img src="assets/flagr.svg" alt="flagr" width="120">
+</p>
 
-A simple web app to identify flags based on their descriptions. Fetches country data from the [REST Countries API](https://restcountries.com/) and allows users to search by flag description or country name.
+## Overview
+
+This is a simple web app that identifies flags based on keywords and patterns. It fetches country data from the [REST Countries API](https://restcountries.com/).
+
+Then again, you could just try to memorize the flags.
 
 ---
 
 ## Features
 
-- **Search by Description**: Filter flags using keywords from their descriptions.
+- **Search by Description**: Filter flags using keywords from their flag description.
+- **Search by Patterns**: Filter flags using predefined pattern buttons.
 - **Alphabetical Sorting**: Flags are sorted and grouped by the first letter of the country name.
 - **Toggle Names**: Show or hide country names below the flags.
 - **Toggle Mode**: Switch between "Overview Mode" (compact view) and "Detail Mode" (expanded view).
 
 ---
 
-## Local Development
+## Usage
+
+Test the [Flagr web app here](flagger.ironlegit.com) or run it locally.
 
 ### Prerequisites
 
@@ -25,4 +34,3 @@ A simple web app to identify flags based on their descriptions. Fetches country 
 1. **API Key**: Add REST Countries API key in `.env`
 2. **Run the App**: Start the development server with `docker-compose up`
 3. **Access the App**: Open your browser and open [localhost:8080](http://localhost:8080)
-
