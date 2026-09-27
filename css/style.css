@@ -8,15 +8,36 @@ body {
   padding: 20px;
 }
 
-.flag-header {
+.flag-sub {
   font-family: "Orbitron", monospace;
-  font-size: 58px;
-  font-weight: 900;
-  letter-spacing: 20px;
+  font-size: 20px;
+  letter-spacing: 10px;
   text-transform: uppercase;
   color: transparent;
   display: inline-block;
   position: relative;
+}
+
+/*.flag-sub {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: rgba(200, 240, 220, 1);
+  margin-top: 1px;
+  text-transform: uppercase;
+}*/
+
+.flag-header {
+  width: 400px;
+  max-width: 100%;
+  height: auto
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* ===== Wave animation ===== */
@@ -29,6 +50,7 @@ body {
     transform: translateY(var(--amp));
   }
 }
+
 .wave-char {
   display: inline-block;
   animation: flagwave 4s ease-in-out infinite;
@@ -38,14 +60,7 @@ body {
 }
 
 /* ===== Flag Section ===== */
-.flag-sub {
-  font-family: "Share Tech Mono", monospace;
-  font-size: 18px;
-  letter-spacing: 4px;
-  color: rgba(200, 240, 220, 1);
-  margin-top: 1px;
-  text-transform: uppercase;
-}
+
 
 #flags-container {
   display: grid;
