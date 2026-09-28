@@ -1,5 +1,13 @@
 <p align="center">
-  <img src="assets/flagr.svg" alt="flagr" width="120">
+  <img src="assets/flagr.svg" alt="flagr" width="150">
+</p>
+
+<p align="center">
+  <a href="https://github.com/ironlegit/flagr/tags"><img alt="Version" src="https://img.shields.io/github/v/tag/ironlegit/flagr?filter=v*"></a>
+  <a href="https://sonarcloud.io/dashboard?id=ironlegit_flagr"><img alt="Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=alert_status"></a>
+  <a href="https://sonarcloud.io/dashboard?id=ironlegit_flagr"><img alt="Maintainability Rating" src="https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=sqale_rating"></a>
+  <a href="https://sonarcloud.io/dashboard?id=ironlegit_flagr"><img alt="Security Rating" src="https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=security_rating"></a>
+  <a href="https://sonarcloud.io/dashboard?id=ironlegit_flagr"><img alt="Bugs" src="https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=bugs"></a>
 </p>
 
 ## Overview
