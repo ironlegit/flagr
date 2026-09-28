@@ -2,6 +2,10 @@
   <img src="assets/flagr.svg" alt="flagr" width="120">
 </p>
 
+![Version](https://img.shields.io/github/v/tag/ironlegit/flagr)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=alert_status)](https://sonarcloud.io/dashboard?id=ironlegit_flagr)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=security_rating)](https://sonarcloud.io/dashboard?id=ironlegit_flagr)
+
 ## Overview
 
 This is a simple web app that identifies flags based on keywords and patterns. It fetches country data from the [REST Countries API](https://restcountries.com/).
