@@ -6,7 +6,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=alert_status)](https://sonarcloud.io/dashboard?id=ironlegit_flagr)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=maintainability_rating)](https://sonarcloud.io/dashboard?id=ironlegit_flagr)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=security_rating)](https://sonarcloud.io/dashboard?id=ironlegit_flagr)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=coverage)](https://sonarcloud.io/dashboard?id=ironlegit_flagr)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ironlegit_flagr&metric=bugs)](https://sonarcloud.io/dashboard?id=ironlegit_flagr)
 
 ## Overview
