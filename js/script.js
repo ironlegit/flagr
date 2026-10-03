@@ -8,7 +8,7 @@ const searchParams = new URLSearchParams();
 const isDev =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1";
-const limit = isDev ? 25 : 300;
+const limit = isDev ? 10 : 300;
 
 // Field selection
 searchParams.append("limit", limit);
