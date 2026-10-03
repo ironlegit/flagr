@@ -14,6 +14,11 @@ const limit = isDev ? 25 : 300;
 searchParams.append("limit", limit);
 searchParams.append("response_fields", "codes.alpha_2");
 searchParams.append("response_fields", "names.common");
+searchParams.append("response_fields", "names.official");
+searchParams.append("response_fields", "capitals");
+searchParams.append("response_fields", "subregion");
+searchParams.append("response_fields", "population");
+searchParams.append("response_fields", "government_type");
 searchParams.append("response_fields", "flag.url_png");
 searchParams.append("response_fields", "flag.description");
 const url = `${api_base}/${api_version}?${searchParams.toString()}`;
@@ -108,6 +113,11 @@ function renderFlags(countries) {
         const name = document.createElement("p");
         name.textContent = country.names.common;
 
+        // Add click handler
+        flagCard.addEventListener("click", () => {
+          showCountryInfo(country); // Pass the country data
+        });
+
         // Append both to the card
         flagCard.appendChild(img);
         flagCard.appendChild(name);
@@ -118,6 +128,49 @@ function renderFlags(countries) {
     }
   });
 }
+
+// ===== Modal Country description =====
+const modal = document.getElementById("country-modal");
+
+function showCountryInfo(country) {
+  // Ensure a content container exists (the button stays untouched)
+  let content = modal.querySelector(".modal-content");
+  if (!content) {
+    content = document.createElement("div");
+    content.className = "modal-content";
+    modal.appendChild(content);
+  }
+
+  // Populate with country data
+  content.innerHTML = `
+    <h2>${country.names.common}</h2>
+    <h4>${country.names.official}</h4>
+    <p>Capital: ${country.capitals[0].name || "N/A"}</p>
+    <p>Population: ${country.population?.toLocaleString()}</p>
+    <p>Region: ${country.subregion}</p>
+    <p>Region: ${country.government_type}</p>
+  `;
+
+  modal.classList.add("visible");
+}
+
+function closeModal() {
+  modal.classList.remove("visible");
+}
+
+// × button
+document.getElementById("modal-close").addEventListener("click", closeModal);
+
+// Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
+});
+
+// Click outside: only fires when the click lands on the modal itself
+// (i.e., the dimmed area around the card), not its content
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) closeModal();
+});
 
 // ===== Keyword Search function =====
 function filterCountries(searchTerm, letter = null) {
