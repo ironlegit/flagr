@@ -131,18 +131,10 @@ function renderFlags(countries) {
 
 // ===== Modal Country description =====
 const modal = document.getElementById("country-modal");
+const modalBody = modal.querySelector(".modal-body");
 
 function showCountryInfo(country) {
-  // Ensure a content container exists (the button stays untouched)
-  let content = modal.querySelector(".modal-content");
-  if (!content) {
-    content = document.createElement("div");
-    content.className = "modal-content";
-    modal.appendChild(content);
-  }
-
-  // Populate with country data
-  content.innerHTML = `
+  modalBody.innerHTML = `
     <h2>${country.names.common}</h2>
     <h4>${country.names.official}</h4>
     <p>Capital: ${country.capitals[0].name || "N/A"}</p>
