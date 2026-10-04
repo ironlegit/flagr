@@ -20,6 +20,7 @@ searchParams.append("response_fields", "subregion");
 searchParams.append("response_fields", "population");
 searchParams.append("response_fields", "government_type");
 searchParams.append("response_fields", "flag.url_png");
+searchParams.append("response_fields", "flag.emoji");
 searchParams.append("response_fields", "flag.description");
 const url = `${api_base}/${api_version}?${searchParams.toString()}`;
 
@@ -98,6 +99,7 @@ function renderFlags(countries) {
         // Create a container for each flag + name
         const flagCard = document.createElement("div");
         flagCard.className = "flag-card"; // For styling
+        console.log(country);
 
         // Create the flag image
         const img = document.createElement("img");
@@ -135,13 +137,22 @@ const modalBody = modal.querySelector(".modal-body");
 
 function showCountryInfo(country) {
   modalBody.innerHTML = `
-    <h2>${country.names.common}</h2>
-    <h4>${country.names.official}</h4>
-    <p>Capital: ${country.capitals[0].name || "N/A"}</p>
-    <p>Population: ${country.population?.toLocaleString()}</p>
-    <p>Region: ${country.subregion}</p>
-    <p>Region: ${country.government_type}</p>
-  `;
+  <div class="modal-header">
+    <div class="header-box">
+      <span class="modal-flag">${country.flag.emoji}</span>
+    </div>
+    <div class="header-box">
+      <div>
+        <h2>${country.names.common}</h2>
+        <h4>${country.names.official}</h4>
+      </div>
+    </div>
+  </div>
+  <div class="info-row"><span class="label">Capital</span><span class="value">${country.capitals?.[0]?.name || "N/A"}</span></div>
+  <div class="info-row"><span class="label">Population</span><span class="value accent">${country.population?.toLocaleString()}</span></div>
+  <div class="info-row"><span class="label">Subregion</span><span class="value">${country.subregion}</span></div>
+  <div class="info-row"><span class="label">Government</span><span class="value">${country.government_type}</span></div>
+`;
 
   modal.classList.add("visible");
 }
