@@ -40,5 +40,5 @@ Test the [Flagr web app here](flagger.ironlegit.com) or run it locally.
 ### Setup
 
 1. **API Key**: Add REST Countries API key in `.env`
-2. **Run the App**: Start the development server with `docker-compose up`
+2. **Run the App**: Start the development server with `docker-compose -f docker-compose.dev.yml up`
 3. **Access the App**: Open your browser and open [localhost:8080](http://localhost:8080)
