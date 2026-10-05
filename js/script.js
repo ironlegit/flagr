@@ -8,13 +8,19 @@ const searchParams = new URLSearchParams();
 const isDev =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1";
-const limit = isDev ? 25 : 300;
+const limit = isDev ? 10 : 300;
 
 // Field selection
 searchParams.append("limit", limit);
 searchParams.append("response_fields", "codes.alpha_2");
 searchParams.append("response_fields", "names.common");
+searchParams.append("response_fields", "names.official");
+searchParams.append("response_fields", "capitals");
+searchParams.append("response_fields", "subregion");
+searchParams.append("response_fields", "population");
+searchParams.append("response_fields", "government_type");
 searchParams.append("response_fields", "flag.url_png");
+searchParams.append("response_fields", "flag.emoji");
 searchParams.append("response_fields", "flag.description");
 const url = `${api_base}/${api_version}?${searchParams.toString()}`;
 
@@ -103,6 +109,11 @@ function renderFlags(countries) {
         const name = document.createElement("p");
         name.textContent = country.names.common;
 
+        // Add click handler
+        flagCard.addEventListener("click", () => {
+          showCountryInfo(country); // Pass the country data
+        });
+
         // Append both to the card
         flagCard.appendChild(img);
         flagCard.appendChild(name);
@@ -113,6 +124,50 @@ function renderFlags(countries) {
     }
   });
 }
+
+// ===== Modal Country description =====
+const modal = document.getElementById("country-modal");
+const modalBody = modal.querySelector(".modal-body");
+
+function showCountryInfo(country) {
+  modalBody.innerHTML = `
+  <div class="modal-header">
+    <div class="header-box">
+      <span class="modal-flag">${country.flag.emoji}</span>
+    </div>
+    <div class="header-box">
+      <div>
+        <h2>${country.names.common}</h2>
+        <h4>${country.names.official}</h4>
+      </div>
+    </div>
+  </div>
+  <div class="info-row"><span class="label">Capital</span><span class="value">${country.capitals?.[0]?.name || "N/A"}</span></div>
+  <div class="info-row"><span class="label">Population</span><span class="value accent">${country.population?.toLocaleString()}</span></div>
+  <div class="info-row"><span class="label">Subregion</span><span class="value">${country.subregion}</span></div>
+  <div class="info-row"><span class="label">Government</span><span class="value">${country.government_type}</span></div>
+`;
+
+  modal.classList.add("visible");
+}
+
+function closeModal() {
+  modal.classList.remove("visible");
+}
+
+// × button
+document.getElementById("modal-close").addEventListener("click", closeModal);
+
+// Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
+});
+
+// Click outside: only fires when the click lands on the modal itself
+// (i.e., the dimmed area around the card), not its content
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) closeModal();
+});
 
 // ===== Keyword Search function =====
 function filterCountries(searchTerm, letter = null) {
@@ -212,7 +267,6 @@ let activeVisualFilters = [];
 function handleVisualFilterClick(event) {
   // Extract the filter key from the button ID (e.g., "toggle-blue" -> "blue")
   const filterKey = event.currentTarget.id.replace("toggle-", "");
-  console.log(filterKey);
   const button = event.currentTarget;
 
   // Toggle the filter key in activeVisualFilters
