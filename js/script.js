@@ -82,11 +82,6 @@ function renderFlags(countries) {
         renderFlags(filteredData);
       });
 
-      // Highlight the active letter
-      if (activeLetter === letter) {
-        letterCard.style.fontWeight = "italic";
-      }
-
       container.appendChild(letterCard);
 
       countriesByLetter.forEach((country) => {
