@@ -88,11 +88,6 @@ function renderFlags(countries) {
         renderFlags(filteredData);
       });
 
-      // Highlight the active letter
-      if (activeLetter === letter) {
-        letterCard.style.fontWeight = "italic";
-      }
-
       container.appendChild(letterCard);
 
       countriesByLetter.forEach((country) => {
@@ -198,7 +193,7 @@ function filterCountries(searchTerm, letter = null) {
       .split(/[,\s]+/)
       .filter((token) => token.length > 0);
 
-    console.log("search terms: " + searchTerms);
+    // console.log("search terms: " + searchTerms);
 
     // Create new filtered array from allCountries
     filteredCountries = filteredCountries.filter((country) => {
@@ -229,14 +224,11 @@ searchInput.addEventListener("input", () => {
 const toggleNamesButton = document.getElementById("toggle-names");
 if (toggleNamesButton) {
   toggleNamesButton.addEventListener("click", () => {
-    // Find all <p> elements inside the flag-card class
-    const names = document.querySelectorAll(".flag-card p");
-    const isHidden = names[0].style.display === "none";
-    // Set <p> to block (visible) or none (hidden)
-    names.forEach((name) => {
-      name.style.display = isHidden ? "block" : "none";
+    const hide = toggleNamesButton.getAttribute("aria-pressed") !== "true";
+    toggleNamesButton.setAttribute("aria-pressed", hide);
+    document.querySelectorAll(".flag-card p").forEach((name) => {
+      name.style.display = hide ? "none" : "block";
     });
-    toggleNamesButton.textContent = isHidden ? "Hide Names" : "Show Names";
   });
 }
 
@@ -244,16 +236,9 @@ if (toggleNamesButton) {
 const toggleModeButton = document.getElementById("toggle-mode");
 if (toggleModeButton) {
   toggleModeButton.addEventListener("click", () => {
-    // Check current status of button
-    const isOverviewMode = toggleModeButton.textContent === "Detail Mode";
-    // Depending on mode decide which style to use in body
-    if (isOverviewMode) {
-      toggleModeButton.textContent = "Overview Mode";
-      document.body.classList.remove("overview-mode");
-    } else {
-      toggleModeButton.textContent = "Detail Mode";
-      document.body.classList.add("overview-mode");
-    }
+    const overview = toggleModeButton.getAttribute("aria-pressed") !== "true";
+    toggleModeButton.setAttribute("aria-pressed", overview);
+    document.body.classList.toggle("overview-mode", overview);
   });
 }
 
