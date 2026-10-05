@@ -99,7 +99,6 @@ function renderFlags(countries) {
         // Create a container for each flag + name
         const flagCard = document.createElement("div");
         flagCard.className = "flag-card"; // For styling
-        console.log(country);
 
         // Create the flag image
         const img = document.createElement("img");
@@ -283,7 +282,6 @@ let activeVisualFilters = [];
 function handleVisualFilterClick(event) {
   // Extract the filter key from the button ID (e.g., "toggle-blue" -> "blue")
   const filterKey = event.currentTarget.id.replace("toggle-", "");
-  console.log(filterKey);
   const button = event.currentTarget;
 
   // Toggle the filter key in activeVisualFilters
