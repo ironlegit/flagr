@@ -146,7 +146,10 @@ function showCountryInfo(country) {
   <div class="info-row"><span class="label">Population</span><span class="value accent">${country.population?.toLocaleString()}</span></div>
   <div class="info-row"><span class="label">Subregion</span><span class="value">${country.subregion}</span></div>
   <div class="info-row"><span class="label">Government</span><span class="value">${country.government_type}</span></div>
-`;
+  <div class="modal-description">
+    <span class="label">Flag description</span>
+    <p>${country.flag.description || "N/A"}</p>
+  </div>`;
 
   modal.classList.add("visible");
   modal.setAttribute("aria-hidden", "false");
