@@ -149,24 +149,27 @@ function showCountryInfo(country) {
 `;
 
   modal.classList.add("visible");
+  modal.setAttribute("aria-hidden", "false");
 }
 
 function closeModal() {
   modal.classList.remove("visible");
+  modal.setAttribute("aria-hidden", "true");
 }
 
 // × button
 document.getElementById("modal-close").addEventListener("click", closeModal);
 
-// Escape key
+// Escape key (only when the modal is open)
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeModal();
+  if (e.key === "Escape" && modal.classList.contains("visible")) closeModal();
 });
 
-// Click outside: only fires when the click lands on the modal itself
-// (i.e., the dimmed area around the card), not its content
+// Click outside: ignore clicks that land inside the card,
+// close on anything else (the backdrop or the modal itself)
 modal.addEventListener("click", (e) => {
-  if (e.target === modal) closeModal();
+  if (e.target.closest(".modal-content")) return;
+  closeModal();
 });
 
 // ===== Keyword Search function =====

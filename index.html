@@ -154,11 +154,12 @@
     <!-- Flag section -->
     <div id="flags-container"></div>
     <div id="letters-container"></div>
-    <div id="country-modal" class="modal">
+    <div id="country-modal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop"></div>
       <div class="modal-content">
-        <button id="modal-close" aria-label="Close">&times;</button>
+        <button id="modal-close" aria-label="Close dialog">&times;</button>
         <div class="modal-body">
-          <!-- Country info will be inserted here -->
+          <!-- country data injected here -->
         </div>
       </div>
     </div>

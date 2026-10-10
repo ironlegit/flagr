@@ -112,20 +112,42 @@ body {
 
 /* ===== Modal View ===== */
 .modal {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(5, 3, 20, 0.6);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 1000;
-}
-
-.modal.visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: backdropIn 0.25s ease;
+  z-index: 1000;
+
+  /* Hidden state: element stays in the render tree, so nothing
+     expensive gets rebuilt every time the modal opens */
+  visibility: hidden;
+  pointer-events: none;
+
+  /* When closing, wait for the exit animations before hiding */
+  transition: visibility 0s 0.3s;
+}
+
+.modal.visible {
+  visibility: visible;
+  pointer-events: auto;
+  transition: visibility 0s; /* appear instantly */
+}
+
+/* Backdrop is now its own layer */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 3, 20, 0.65);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: opacity; /* keep the blur layer promoted, no re-raster on open */
+}
+
+.modal.visible .modal-backdrop {
+  opacity: 1;
 }
 
 .modal-content {
@@ -142,23 +164,34 @@ body {
   max-width: 420px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   overflow: hidden;
+
+  /* Entrance + exit handled by transitions instead of animations,
+     so closing animates too */
+  opacity: 0;
+  transform: scale(0.92) translateY(12px);
+  transition:
+    opacity 0.3s cubic-bezier(0.21, 1.02, 0.73, 1),
+    transform 0.3s cubic-bezier(0.21, 1.02, 0.73, 1);
+  will-change: opacity, transform;
 }
 
-/* animated gradient line across the top */
+.modal.visible .modal-content {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* animated gradient line across the top — now moved with transform
+   (compositor-only) instead of background-position (repaints) */
 .modal-content::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
+  width: 200%;
   height: 3px;
   background: linear-gradient(90deg, #667eea, #b06cf0, #667eea);
-  background-size: 200% 100%;
   animation: shimmer 4s linear infinite;
-}
-
-.modal.visible .modal-content {
-  animation: cardIn 0.3s cubic-bezier(0.21, 1.02, 0.73, 1);
+  will-change: transform;
 }
 
 .modal-header {
@@ -248,32 +281,24 @@ body {
   transform: rotate(90deg);
 }
 
-@keyframes backdropIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes cardIn {
-  from {
-    opacity: 0;
-    transform: scale(0.92) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
 @keyframes shimmer {
   from {
-    background-position: 200% 0;
+    transform: translateX(0);
   }
   to {
-    background-position: -200% 0;
+    transform: translateX(-50%);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-content,
+  .modal-backdrop,
+  .modal-content::before {
+    animation: none;
+    transition: none;
+  }
+}
+
 /* ===== Overview mode styles ===== */
 .overview-mode #flags-container {
   grid-template-columns: repeat(
