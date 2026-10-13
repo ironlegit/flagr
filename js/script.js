@@ -9,9 +9,11 @@ const isDev =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1";
 const limit = isDev ? 10 : 300;
+const offset = isDev ? 207 : 0;
 
 // Field selection
 searchParams.append("limit", limit);
+searchParams.append("offset", offset);
 searchParams.append("response_fields", "codes.alpha_2");
 searchParams.append("response_fields", "names.common");
 searchParams.append("response_fields", "names.official");
