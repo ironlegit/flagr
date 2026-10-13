@@ -165,7 +165,7 @@ function showCountryInfo(country) {
   </div>
   <div class="info-row"><span class="label">Capital</span><span class="value">${parseCapitals(country.capitals).join("<br>") || "N/A"}</span></div>
   <div class="info-row"><span class="label">Population</span><span class="value accent">${country.population?.toLocaleString()}</span></div>
-  <div class="info-row"><span class="label">Subregion</span><span class="value">${country.subregion}</span></div>
+  <div class="info-row"><span class="label">Region</span><span class="value">${country.subregion}</span></div>
   <div class="info-row"><span class="label">Government</span><span class="value">${country.government_type}</span></div>
   <div class="modal-description">
     <span class="label">Flag description</span>
