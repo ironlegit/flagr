@@ -98,13 +98,8 @@ function renderFlags(countries) {
 
         // Create the flag image
         const img = document.createElement("img");
-        if (country.flag.url_png && country.flag.url_png !== "") {
-          img.src = country.flag.url_png;
-          img.alt = country.cca2;
-        } else {
-          img.src = "assets/placeholder_flag.png";
-          img.alt = `Flag not found for ${country.names.common}`;
-        }
+        img.src = flagImgSrc(country);
+        img.alt = `Flag of ${country.names.common}`;
 
         // Create the country name
         const name = document.createElement("p");
@@ -126,6 +121,12 @@ function renderFlags(countries) {
   });
 }
 
+function flagImgSrc(country) {
+  return country.flag.url_png && country.flag.url_png !== ""
+    ? country.flag.url_png
+    : "assets/placeholder_flag.png";
+}
+
 // ===== Modal Country description =====
 const modal = document.getElementById("country-modal");
 const modalBody = modal.querySelector(".modal-body");
@@ -134,7 +135,7 @@ function showCountryInfo(country) {
   modalBody.innerHTML = `
   <div class="modal-header">
     <div class="header-box">
-      <span class="modal-flag">${country.flag.emoji}</span>
+      <img class="modal-flag" src="${flagImgSrc(country)}" alt="">
     </div>
     <div class="header-box">
       <div>
