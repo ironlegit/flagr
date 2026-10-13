@@ -52,9 +52,42 @@ fetch(url)
   .catch((error) => console.error("Error:", error));
 
 // ===== Render flags =====
+function createFlagCard(country) {
+  // Create a container for each flag + name
+  const flagCard = document.createElement("div");
+  flagCard.className = "flag-card";
+
+  // Create the flag image
+  const img = document.createElement("img");
+  img.src = flagImgSrc(country);
+  img.alt = `Flag of ${country.names.common}`;
+
+  // Create the country name
+  const name = document.createElement("p");
+  name.textContent = country.names.common;
+  name.style.display = hideNames ? "none" : "block";
+
+  // Add click handler
+  flagCard.addEventListener("click", () => showCountryInfo(country));
+
+  // Append both to the card
+  flagCard.appendChild(img);
+  flagCard.appendChild(name);
+
+  return flagCard;
+}
+
 function renderFlags(countries) {
   const container = document.getElementById("flags-container");
   container.innerHTML = "";
+
+  // Game mode
+  if (gameMode) {
+    countries.forEach((country) => {
+      container.appendChild(createFlagCard(country));
+    });
+    return;
+  }
 
   // Sort countries alphabetically
   countries.sort((a, b) => a.names.common.localeCompare(b.names.common));
@@ -92,30 +125,7 @@ function renderFlags(countries) {
       container.appendChild(letterCard);
 
       countriesByLetter.forEach((country) => {
-        // Create a container for each flag + name
-        const flagCard = document.createElement("div");
-        flagCard.className = "flag-card"; // For styling
-
-        // Create the flag image
-        const img = document.createElement("img");
-        img.src = flagImgSrc(country);
-        img.alt = `Flag of ${country.names.common}`;
-
-        // Create the country name
-        const name = document.createElement("p");
-        name.textContent = country.names.common;
-
-        // Add click handler
-        flagCard.addEventListener("click", () => {
-          showCountryInfo(country); // Pass the country data
-        });
-
-        // Append both to the card
-        flagCard.appendChild(img);
-        flagCard.appendChild(name);
-
-        // Append the card to the main container
-        container.appendChild(flagCard);
+        container.appendChild(createFlagCard(country));
       });
     }
   });
@@ -144,6 +154,23 @@ function parseCapitals(capitals) {
     }
     return name;
   });
+}
+
+// ===== Game mode =====
+
+let gameMode = false;
+let gameDeck = [];
+let hideNames = false;
+
+// Fisher-Yates Shuffling
+function shuffleFlags(array) {
+  const copy = [...array];
+
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
 }
 
 // ===== Modal Country description =====
@@ -251,11 +278,39 @@ searchInput.addEventListener("input", () => {
 const toggleNamesButton = document.getElementById("toggle-names");
 if (toggleNamesButton) {
   toggleNamesButton.addEventListener("click", () => {
-    const hide = toggleNamesButton.getAttribute("aria-pressed") !== "true";
-    toggleNamesButton.setAttribute("aria-pressed", hide);
+    // Make top-level variable as it need to be accessed outside the click handler
+    hideNames = toggleNamesButton.getAttribute("aria-pressed") !== "true";
+    toggleNamesButton.setAttribute("aria-pressed", hideNames);
     document.querySelectorAll(".flag-card p").forEach((name) => {
-      name.style.display = hide ? "none" : "block";
+      name.style.display = hideNames ? "none" : "block";
     });
+  });
+}
+
+// Toggle Game Mode
+const toggleGameButton = document.getElementById("toggle-game");
+if (toggleGameButton) {
+  toggleGameButton.addEventListener("click", () => {
+    gameMode = !gameMode;
+    toggleGameButton.setAttribute("aria-pressed", gameMode);
+
+    if (gameMode) {
+      // Shuffle country cards
+      gameDeck = shuffleFlags(allCountries);
+
+      // Force hide-names toggle
+      hideNames = true;
+      toggleNamesButton?.setAttribute("aria-pressed", "true");
+
+      // Restore search or letter filter-btn-vis
+      activeLetter = null;
+      searchInput.value = "";
+
+      renderFlags(gameDeck);
+    } else {
+      // Return to ordered view when deactivated
+      renderFlags(filterCountries(searchInput.value.trim(), activeLetter));
+    }
   });
 }
 
