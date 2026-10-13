@@ -149,17 +149,13 @@ body {
 
 .modal-content {
   position: relative;
-  background: linear-gradient(
-    160deg,
-    rgba(31, 27, 68, 0.95),
-    rgba(18, 15, 44, 0.95)
-  );
+  background: linear-gradient(160deg, rgba(31, 27, 68, 1), rgba(18, 15, 44, 1));
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 26px 28px 14px;
   min-width: 320px;
   max-width: 420px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.55);
   overflow: hidden;
 
   /* Entrance + exit handled by transitions instead of animations,
