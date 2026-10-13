@@ -127,6 +127,25 @@ function flagImgSrc(country) {
     : "assets/placeholder_flag.png";
 }
 
+function parseCapitals(capitals) {
+  // Use RHS if null
+  const list = capitals ?? [];
+
+  // If multiple capitals show capital type (e.g. judicial)
+  const displayType = list.length > 1;
+
+  return list.map(({ name, attributes = {} }) => {
+    const type = Object.keys(attributes).find(
+      (key) => attributes[key] === true,
+    );
+
+    if (displayType && type) {
+      return `${name} (${type})`;
+    }
+    return name;
+  });
+}
+
 // ===== Modal Country description =====
 const modal = document.getElementById("country-modal");
 const modalBody = modal.querySelector(".modal-body");
@@ -144,7 +163,7 @@ function showCountryInfo(country) {
       </div>
     </div>
   </div>
-  <div class="info-row"><span class="label">Capital</span><span class="value">${country.capitals?.[0]?.name || "N/A"}</span></div>
+  <div class="info-row"><span class="label">Capital</span><span class="value">${parseCapitals(country.capitals).join("<br>") || "N/A"}</span></div>
   <div class="info-row"><span class="label">Population</span><span class="value accent">${country.population?.toLocaleString()}</span></div>
   <div class="info-row"><span class="label">Subregion</span><span class="value">${country.subregion}</span></div>
   <div class="info-row"><span class="label">Government</span><span class="value">${country.government_type}</span></div>
