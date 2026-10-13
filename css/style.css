@@ -208,9 +208,14 @@ body {
 }
 
 .modal-header .modal-flag {
-  font-size: 46px;
-  line-height: 1;
+  width: 120px;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .modal-header h2 {
   font-size: 22px;
   font-weight: 700;
