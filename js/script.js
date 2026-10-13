@@ -162,12 +162,19 @@ let gameMode = false;
 let gameDeck = [];
 let hideNames = false;
 
+// Use this instead of Math.random as Sonarqube complains
+function randomIndex(maxExclusive) {
+  const buf = new Uint32Array(1);
+  crypto.getRandomValues(buf);
+  return buf[0] % maxExclusive;
+}
+
 // Fisher-Yates Shuffling
 function shuffleFlags(array) {
   const copy = [...array];
 
   for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = randomIndex(i + 1);
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
   return copy;
