@@ -9,10 +9,11 @@ const isDev =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1";
 const limit = isDev ? 10 : 300;
+const offset = isDev ? 207 : 0;
 
 // Field selection
 searchParams.append("limit", limit);
-searchParams.append("response_fields", "codes.alpha_2");
+searchParams.append("offset", offset);
 searchParams.append("response_fields", "names.common");
 searchParams.append("response_fields", "names.official");
 searchParams.append("response_fields", "capitals");
@@ -97,13 +98,8 @@ function renderFlags(countries) {
 
         // Create the flag image
         const img = document.createElement("img");
-        if (country.flag.url_png && country.flag.url_png !== "") {
-          img.src = country.flag.url_png;
-          img.alt = country.cca2;
-        } else {
-          img.src = "assets/placeholder_flag.png";
-          img.alt = `Flag not found for ${country.names.common}`;
-        }
+        img.src = flagImgSrc(country);
+        img.alt = `Flag of ${country.names.common}`;
 
         // Create the country name
         const name = document.createElement("p");
@@ -125,6 +121,31 @@ function renderFlags(countries) {
   });
 }
 
+function flagImgSrc(country) {
+  return country.flag.url_png && country.flag.url_png !== ""
+    ? country.flag.url_png
+    : "assets/placeholder_flag.png";
+}
+
+function parseCapitals(capitals) {
+  // Use RHS if null
+  const list = capitals ?? [];
+
+  // If multiple capitals show capital type (e.g. judicial)
+  const displayType = list.length > 1;
+
+  return list.map(({ name, attributes = {} }) => {
+    const type = Object.keys(attributes).find(
+      (key) => attributes[key] === true,
+    );
+
+    if (displayType && type) {
+      return `${name} (${type})`;
+    }
+    return name;
+  });
+}
+
 // ===== Modal Country description =====
 const modal = document.getElementById("country-modal");
 const modalBody = modal.querySelector(".modal-body");
@@ -133,7 +154,7 @@ function showCountryInfo(country) {
   modalBody.innerHTML = `
   <div class="modal-header">
     <div class="header-box">
-      <span class="modal-flag">${country.flag.emoji}</span>
+      <img class="modal-flag" src="${flagImgSrc(country)}" alt="">
     </div>
     <div class="header-box">
       <div>
@@ -142,31 +163,37 @@ function showCountryInfo(country) {
       </div>
     </div>
   </div>
-  <div class="info-row"><span class="label">Capital</span><span class="value">${country.capitals?.[0]?.name || "N/A"}</span></div>
+  <div class="info-row"><span class="label">Capital</span><span class="value">${parseCapitals(country.capitals).join("<br>") || "N/A"}</span></div>
   <div class="info-row"><span class="label">Population</span><span class="value accent">${country.population?.toLocaleString()}</span></div>
-  <div class="info-row"><span class="label">Subregion</span><span class="value">${country.subregion}</span></div>
+  <div class="info-row"><span class="label">Region</span><span class="value">${country.subregion}</span></div>
   <div class="info-row"><span class="label">Government</span><span class="value">${country.government_type}</span></div>
-`;
+  <div class="modal-description">
+    <span class="label">Flag description</span>
+    <p>${country.flag.description || "N/A"}</p>
+  </div>`;
 
   modal.classList.add("visible");
+  modal.setAttribute("aria-hidden", "false");
 }
 
 function closeModal() {
   modal.classList.remove("visible");
+  modal.setAttribute("aria-hidden", "true");
 }
 
 // × button
 document.getElementById("modal-close").addEventListener("click", closeModal);
 
-// Escape key
+// Escape key (only when the modal is open)
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeModal();
+  if (e.key === "Escape" && modal.classList.contains("visible")) closeModal();
 });
 
-// Click outside: only fires when the click lands on the modal itself
-// (i.e., the dimmed area around the card), not its content
+// Click outside: ignore clicks that land inside the card,
+// close on anything else (the backdrop or the modal itself)
 modal.addEventListener("click", (e) => {
-  if (e.target === modal) closeModal();
+  if (e.target.closest(".modal-content")) return;
+  closeModal();
 });
 
 // ===== Keyword Search function =====
