@@ -14,7 +14,6 @@ const offset = isDev ? 207 : 0;
 // Field selection
 searchParams.append("limit", limit);
 searchParams.append("offset", offset);
-searchParams.append("response_fields", "codes.alpha_2");
 searchParams.append("response_fields", "names.common");
 searchParams.append("response_fields", "names.official");
 searchParams.append("response_fields", "capitals");
